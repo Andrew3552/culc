@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef} from "react";
 import Logo from "./assets/logo.png";
 import mainImg from "./assets/qz3.png";
+import qz from "./assets/qz.mp4";
 
 import "./App.css";
 
@@ -18,15 +19,25 @@ const calculateReturn = (age, investment) => {
   return returnAmount < 350000 ? 350000 : returnAmount;
 };
 
+
+
 function App() {
   const [age, setAge] = useState(30);
   const [investment, setInvestment] = useState(50000);
   const [returnAmount, setReturnAmount] = useState(calculateReturn(30, 50000));
   const [notifications, setNotifications] = useState([]);
-
+  const videoRef = useRef(null);
   useEffect(() => {
     setReturnAmount(calculateReturn(age, investment));
   }, [age, investment]);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (video) {
+      video.muted = false; // Отключаем mute
+      video.play().catch((error) => console.log("Автовоспроизведение заблокировано:", error));
+    }
+  }, []);
 
   useEffect(() => {
     const messages = [
@@ -97,10 +108,17 @@ function App() {
         </div>
       </div>
       <div>
-        <img className="mainImg" src={mainImg} alt="mainImg" />
+        <video 
+        className="mainImg" 
+        ref={videoRef}
+        src={qz} 
+        autoPlay 
+        loop 
+        controls/>
       </div>
       <div className="calculator_container">
-        <h2 className="title">Калькулятор доходности</h2>
+        <h2 className="title">Рассчитайте свою прибыль!</h2>
+        <p className="description">Выберите свой возраст и сумму инвестиций – узнайте, сколько сможете заработать уже через две недели! 🚀💰</p>
         <div>
           <h3 className='title_calculator'>1. Выберите возраст</h3>
           <label className="label">Возраст: {age}</label>
@@ -125,7 +143,7 @@ function App() {
             step="100"
             value={investment}
             onChange={(e) => setInvestment(Number(e.target.value))}
-            style={{ width: "100%", height: "20px", accentColor: "#ff0000" }}
+            style={{ width: "100%", accentColor: "#ff0000" }}
           />
         </div>
         {returnAmount !== null && (
