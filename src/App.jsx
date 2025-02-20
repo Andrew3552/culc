@@ -125,7 +125,7 @@ function App() {
             step="100"
             value={investment}
             onChange={(e) => setInvestment(Number(e.target.value))}
-            style={{ width: "100%", accentColor: "#ff0000" }}
+            style={{ width: "100%", height: "20px", accentColor: "#ff0000" }}
           />
         </div>
         {returnAmount !== null && (
@@ -147,7 +147,7 @@ function App() {
           3. Подтвердите свое участие
         </h3>
         <p className="step_text">
-        чтобы получить личное сопровождение и проверенную стратегию заработка от <p>Михаила Ломтадзе</p> 
+        чтобы получить личное сопровождение и проверенную стратегию заработка от <p className="step_text_name">Михаила Ломтадзе</p> 
         </p>
 
       </div>
