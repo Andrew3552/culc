@@ -6,18 +6,25 @@ import qz from "./assets/qz.mp4";
 import "./App.css";
 
 const calculateReturn = (age, investment) => {
-  const baseMultiplier = 7.4;
-  let ageFactor = 1 + (age - 25) * 0.005; // Плавное изменение доходности с возрастом
+  // Базовый коэффициент, зависящий от суммы инвестиций (умеренный рост)
+  let baseMultiplier = 3.6 + (investment / 200000) * 0.015; 
 
-  if (age >= 30 && age < 45) {
-    ageFactor += 0.05; // Повышенный коэффициент доходности
-  } else if (age >= 45) {
-    ageFactor += 0.03; // Чуть ниже, но выше, чем у молодых
+  // Возрастной коэффициент (гибкая шкала)
+  let ageFactor = 1 + (age - 25) * 0.0015; 
+
+  if (age >= 35 && age < 50) {
+    ageFactor += 0.04 ; // Максимальный бонус
+  } else if (age >= 50) {
+    ageFactor += 0.005; // Немного ниже после 50
   }
 
+  // Итоговый расчет дохода
   let returnAmount = Math.round(investment * baseMultiplier * ageFactor);
-  return returnAmount < 350000 ? 350000 : returnAmount;
+
+  // **Минимальный доход 350K ₸, но уже с динамическим изменением**
+  return Math.max(returnAmount, 350000 + (investment - 50000) * 0.2);
 };
+
 
 
 
@@ -140,7 +147,7 @@ function App() {
             type="range"
             min="50000"
             max="500000"
-            step="100"
+            step="500"
             value={investment}
             onChange={(e) => setInvestment(Number(e.target.value))}
             style={{ width: "100%", accentColor: "#ff0000" }}
@@ -165,7 +172,7 @@ function App() {
           3. Подтвердите свое участие
         </h3>
         <p className="step_text">
-        чтобы получить личное сопровождение и проверенную стратегию заработка от <p className="step_text_name">Михаила Ломтадзе</p> 
+        Чтобы получить личное сопровождение и проверенную стратегию заработка от <p className="step_text_name">Михаила Ломтадзе</p> 
         </p>
 
       </div>
